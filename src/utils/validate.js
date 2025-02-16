@@ -4,6 +4,6 @@ export const checkValidData = (email,password,name) => {
     const isValidName = /^[a-zA-Z]+ [a-zA-Z]+$/.test(name)
     if(!isValidEmail) return "Enter a valid Email"
     if(!isValidPassword) return "Enter a valid Password"
-    if(!isValidName) return "Enter a valid Name"
+    // if(!isValidName) return "Enter a valid Name"
     return null
 }
