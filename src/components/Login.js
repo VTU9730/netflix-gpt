@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import {checkValidData} from '../utils/validate';
+import { addUser } from "../Slices/userSlice";
+import { useDispatch } from "react-redux";
 
 
 
@@ -13,6 +15,7 @@ const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const emailRef = useRef(null)
   const passwordRef= useRef(null)
@@ -31,6 +34,10 @@ const Login = () => {
             // Sign up 
             const user = userCredential.user;
             if(user){
+              dispatch(addUser({
+                email:emailRef.current.value,
+                name:nameRef.current.value
+              }))
               navigate('/browse')
             }
             console.log(user);
@@ -46,8 +53,11 @@ const Login = () => {
           .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
-            console.log(user);
             if(user){
+              dispatch(addUser({
+                email:user.email,
+                id:user.uid
+              }))
               navigate('/browse')
             }
           })
