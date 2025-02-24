@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import {checkValidData} from '../utils/validate';
 import { addUser } from "../Slices/userSlice";
@@ -10,11 +9,11 @@ import { useDispatch } from "react-redux";
 // Auth-Firebase
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import {auth} from '../utils/firebase'
+import { BG } from "../utils/constants";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true)
   const [error, setError] = useState(null)
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const emailRef = useRef(null)
@@ -34,15 +33,9 @@ const Login = () => {
             // Sign up 
             const user = userCredential.user;
             if(user){
-              dispatch(addUser({
-                email:emailRef.current.value,
-                name:nameRef.current.value,
-                id:user.uid
-              }))
               updateProfile(user, {
                 displayName: nameRef.current.value
               }).then(() => {
-                navigate('/browse')
               }).catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
@@ -68,7 +61,6 @@ const Login = () => {
                 email:user.email,
                 id:user.uid
               }))
-              navigate('/browse')
             }
           })
           .catch((error) => {
@@ -84,7 +76,7 @@ const Login = () => {
       <Header />
       <div className="absolute top-0 bg-gradient-to-b from-black">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/f268d374-734d-474f-ad13-af5ba87ef9fc/web/IN-en-20250210-TRIFECTA-perspective_92338d5d-6ccd-4b1a-8536-eb2b0240a55e_small.jpg"
+          src={BG}
           alt="bg"
         />
       </div>
