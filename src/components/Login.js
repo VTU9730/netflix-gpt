@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 
 
 // Auth-Firebase
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import {auth} from '../utils/firebase'
 
 const Login = () => {
@@ -36,9 +36,19 @@ const Login = () => {
             if(user){
               dispatch(addUser({
                 email:emailRef.current.value,
-                name:nameRef.current.value
+                name:nameRef.current.value,
+                id:user.uid
               }))
-              navigate('/browse')
+              updateProfile(user, {
+                displayName: nameRef.current.value
+              }).then(() => {
+                navigate('/browse')
+              }).catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                setError(errorMessage)
+              });
+              
             }
             console.log(user);
           })
